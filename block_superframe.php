@@ -48,13 +48,19 @@ to register your plugin in the plugins database
  * Class superframe minimal required block class.
  *
  */
-
 class block_superframe extends block_base {
     /**
      * Initialize our block with a language string.
      */
     public function init() {
         $this->title = get_string('pluginname', 'block_superframe');
+    }
+
+    /**
+     * Allow block configuration.
+     */
+    function has_config() {
+        return true;
     }
 
     /**
@@ -76,14 +82,47 @@ class block_superframe extends block_base {
         // OK let's add some content.
         $this->content = new stdClass();
         $this->content->footer = '';
-        $this->content->text = get_string('welcomeuser', 'block_superframe',
-                $USER);
 
-        $this->content->text .= '<br><a href="' . $CFG->wwwroot . '/blocks/superframe/view.php">' .
-                get_string('viewlink', 'block_superframe') . '</a>';
+        // $this->content->text = get_string('welcomeuser', 'block_superframe', $USER);
+        $this->content->text = new lang_string('welcomeuser', 'block_superframe', $USER, 'en');
+
+
+        // Add the block id to the Moodle URL for the view page.
+        $blockid = $this->instance->id;
+        $courseid = $this->page->course->id;
+        $context = context_block::instance($blockid);
+
+        // Check the capability.
+        if (has_capability('block/superframe:seeviewpage', $context)) {
+
+            $url = new moodle_url('/blocks/superframe/view.php',
+                    ['blockid' => $blockid]);
+            $this->content->text .= '<p>' . html_writer::link($url,
+                    get_string('viewlink', 'block_superframe')) . '</p>';
+        }
+
+        // Display list of student.
+        if (has_capability('block/superframe:seestudentlist', $context)) {
+            $users = self::get_course_users($courseid);
+            $this->content->text .= '<ul>';
+
+
+            foreach ($users as $user) {
+
+                $userpicture = new user_picture($USER);
+                $userpicture->size = false; // Size f1.
+                $profileimageurl = $userpicture->get_url($this->page)->out(false);
+
+                $user_image = '<img src="'.$profileimageurl.'" />';
+
+                $this->content->text .='<li>' . $user_image . $user->firstname . '</li>';
+            }
+            $this->content->text .= '</ul>';
+        }
 
         return $this->content;
     }
+
     /**
      * This is a list of places where the block may or
      * may not be added.
@@ -95,11 +134,28 @@ class block_superframe extends block_base {
                      'course-view' => true,
                      'my' => true);
     }
+
     /**
      * Allow multiple instances of the block.
      */
     public function instance_allow_multiple() {
         return true;
+    }
+
+    private static function get_course_users($courseid) {
+        global $DB;
+
+        $sql = "SELECT u.id, u.firstname
+                FROM {course} as c
+                JOIN {context} as x ON c.id = x.instanceid
+                JOIN {role_assignments} as r ON r.contextid = x.id
+                JOIN {user} AS u ON u.id = r.userid
+               WHERE c.id = :courseid
+                 AND r.roleid = :roleid";
+
+        $records = $DB->get_records_sql($sql, ['courseid' => $courseid, 'roleid' => 5]);
+
+        return $records;
     }
 
 }

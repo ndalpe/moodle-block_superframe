@@ -39,3 +39,32 @@ $string['superframe:myaddinstance'] = 'Add a new Super frame block to my moodle'
 
 $string['viewlink'] = 'View link';
 $string['message'] = 'I am a great developer';
+
+
+$string['headerconfig'] = 'Superframe settings';
+$string['headerconfigdesc'] = 'Use these options to configure block superframe';
+$string['url'] = "The iframe's full url";
+$string['url_details'] = 'Must begin with http or https';
+$string['width'] = "iframe's width";
+$string['width_details'] = "iframe's width in pixels";
+$string['height'] = "iframe's height";
+$string['height_details'] = "iframe's height in pixels";
+$string['pagelayout'] = 'Choose page layout';
+$string['pagelayout_details'] = 'Open the iframe in a course or popup window';
+
+// Capability strings.
+$string['superframe:addinstance'] = 'Add a new Super frame block';
+$string['superframe:myaddinstance'] = 'Add a new Super frame block to my moodle';
+
+// Edit form strings.
+$string['size'] = 'Select a size for your iframe';
+$string['custom'] = 'Custom';
+$string['small'] = 'Small';
+$string['medium'] = 'Medium';
+$string['large'] = 'Large';
+
+// Capability strings.
+$string['superframe:addinstance'] = 'Add a new Super frame block';
+$string['superframe:myaddinstance'] = 'Add a new Super frame block to my moodle';
+$string['superframe:seeviewpage'] = 'Access the view page';
+$string['superframe:seestudentlist'] = 'See student list in block';

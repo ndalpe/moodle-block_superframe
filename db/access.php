@@ -43,6 +43,7 @@ $capabilities = array(
 
         'clonepermissionsfrom' => 'moodle/my:manageblocks'
     ),
+
     // Specified user can add to courses etc.
     'block/superframe:addinstance' => array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
@@ -56,4 +57,40 @@ $capabilities = array(
 
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
+
+    // Specified user can add to courses etc.
+    'block/superframe:addinstance' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_BLOCK,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'moodle/site:manageblocks'
+    ),
+
+    // Restrict access to view page.
+    'block/superframe:seeviewpage' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+            'student' => CAP_ALLOW,
+            'guest' => CAP_PREVENT
+        )
+    ),
+
+    // Restrict access to view student list.
+    'block/superframe:seestudentlist' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+            'student' => CAP_PREVENT,
+            'guest' => CAP_PREVENT
+        )
+    )
 );

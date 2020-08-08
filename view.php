@@ -21,14 +21,64 @@
  * Modified for use in MoodleBites for Developers Level 1 by Richard Jones & Justin Hunt
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require('../../config.php');
+
+$blockid = required_param('blockid', PARAM_INT);
+
+// Get block's settings.
+$def_config = get_config('block_superframe');
+
 $PAGE->set_course($COURSE);
 $PAGE->set_url('/blocks/superframe/view.php');
 $PAGE->set_heading($SITE->fullname);
-$PAGE->set_pagelayout('course');
+// $PAGE->set_pagelayout('course');
+$PAGE->set_pagelayout($def_config->pagelayout);
 $PAGE->set_title(get_string('pluginname', 'block_superframe'));
 $PAGE->navbar->add(get_string('pluginname', 'block_superframe'));
+
 require_login();
+
+// Check the users permissions to see the view page.
+$context = context_block::instance($blockid);
+require_capability('block/superframe:seeviewpage', $context);
+
+// Get the instance configuration data from the database.
+// It's stored as a base 64 encoded serialized string.
+$configdata = $DB->get_field('block_instances', 'configdata', ['id' => $blockid]);
+
+// If an entry exists, convert to an object.
+if ($configdata) {
+	$config = unserialize(base64_decode($configdata));
+} else {
+	// No instance data, use admin settings.
+	// However, that only specifies height and width, not size.
+	$config = $def_config;
+	$config->size = 'custom';
+}
+
+// URL - comes either from instance or admin.
+$url = $config->url;
+
+// Let's set up the iframe attributes.
+switch ($config->size) {
+    case 'custom':
+        $width = $def_config->width;
+        $height = $def_config->height;
+        break;
+    case 'small' :
+        $width = 360;
+        $height = 240;
+        break;
+    case 'medium' :
+        $width = 600;
+        $height = 400;
+        break;
+    case 'large' :
+        $width = 1024;
+        $height = 720;
+        break;
+}
 
 // Start output to browser.
 echo $OUTPUT->header();
@@ -50,16 +100,14 @@ echo html_writer::end_tag('div');
 echo html_writer::end_tag('div'); // End row.
 
 
-
 echo html_writer::start_tag('div', array('class' => 'row'));
 echo html_writer::start_tag('div', array('class' => 'col-1'));
+
 // Build and display an iframe.
-$url = 'https://quizlet.com/132695231/scatter/embed';
-$width = '600px';
-$height = '400px';
 $attributes = ['src' => $url,
                'width' => $width,
                'height' => $height];
+
 echo html_writer::start_tag('iframe', $attributes);
 echo html_writer::end_tag('iframe');
 
