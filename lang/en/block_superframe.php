@@ -58,6 +58,8 @@ $string['blockname'] = 'Block Name';
 $string['course'] = 'Course';
 $string['catname'] = 'Cat Name';
 $string['tablecaption'] = 'Block instance by course';
+$string['tabletext'] = 'Table editing';
+
 
 // Capability strings.
 $string['superframe:addinstance'] = 'Add a new Super frame block';
