@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * superframe view page
  *
@@ -81,8 +82,8 @@ switch ($config->size) {
 }
 
 // Start output to browser.
-echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('pluginname', 'block_superframe'), 5);
+// echo $OUTPUT->header();
+// echo $OUTPUT->heading(get_string('pluginname', 'block_superframe'), 5);
 
 echo html_writer::start_tag('div', array('class' => 'row'));
 echo html_writer::start_tag('div', array('class' => 'col-2'));
@@ -93,27 +94,30 @@ $profileimageurl = $userpicture->get_url($PAGE)->out(false);
 echo '<img src="'.$profileimageurl.'" />';
 echo html_writer::end_tag('div');
 
-echo html_writer::start_tag('div', array('class' => 'col-10'));
-echo '<br>' . fullname($USER) . '<br>';
-echo html_writer::end_tag('div');
+// echo html_writer::start_tag('div', array('class' => 'col-10'));
+// echo '<br>' . fullname($USER) . '<br>';
+// echo html_writer::end_tag('div');
 
 echo html_writer::end_tag('div'); // End row.
 
 
-echo html_writer::start_tag('div', array('class' => 'row'));
-echo html_writer::start_tag('div', array('class' => 'col-1'));
+// echo html_writer::start_tag('div', array('class' => 'row'));
+// echo html_writer::start_tag('div', array('class' => 'col-1'));
 
-// Build and display an iframe.
-$attributes = ['src' => $url,
-               'width' => $width,
-               'height' => $height];
+// // Build and display an iframe.
+// $attributes = ['src' => $url,
+//                'width' => $width,
+//                'height' => $height];
 
-echo html_writer::start_tag('iframe', $attributes);
-echo html_writer::end_tag('iframe');
+// echo html_writer::start_tag('iframe', $attributes);
+// echo html_writer::end_tag('iframe');
 
-echo html_writer::end_tag('div');
-echo html_writer::end_tag('div'); // End row.
+// echo html_writer::end_tag('div');
+// echo html_writer::end_tag('div'); // End row.
 
 
 //send footer out to browser
-echo $OUTPUT->footer();
+// echo $OUTPUT->footer();
+
+$renderer = $PAGE->get_renderer('block_superframe');
+$renderer->display_view_page($url, $width, $height);

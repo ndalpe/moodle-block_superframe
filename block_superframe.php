@@ -83,41 +83,22 @@ class block_superframe extends block_base {
         $this->content = new stdClass();
         $this->content->footer = '';
 
-        // $this->content->text = get_string('welcomeuser', 'block_superframe', $USER);
-        $this->content->text = new lang_string('welcomeuser', 'block_superframe', $USER, 'en');
-
 
         // Add the block id to the Moodle URL for the view page.
         $blockid = $this->instance->id;
         $courseid = $this->page->course->id;
         $context = context_block::instance($blockid);
 
+        // Get the user list detail.
+        if (has_capability('block/superframe:seestudentlist', $context)) {
+            $students = self::get_course_users($courseid);
+        }
+
         // Check the capability.
         if (has_capability('block/superframe:seeviewpage', $context)) {
 
-            $url = new moodle_url('/blocks/superframe/view.php',
-                    ['blockid' => $blockid]);
-            $this->content->text .= '<p>' . html_writer::link($url,
-                    get_string('viewlink', 'block_superframe')) . '</p>';
-        }
-
-        // Display list of student.
-        if (has_capability('block/superframe:seestudentlist', $context)) {
-            $users = self::get_course_users($courseid);
-            $this->content->text .= '<ul>';
-
-
-            foreach ($users as $user) {
-
-                $userpicture = new user_picture($USER);
-                $userpicture->size = false; // Size f1.
-                $profileimageurl = $userpicture->get_url($this->page)->out(false);
-
-                $user_image = '<img src="'.$profileimageurl.'" />';
-
-                $this->content->text .='<li>' . $user_image . $user->firstname . '</li>';
-            }
-            $this->content->text .= '</ul>';
+            $renderer = $this->page->get_renderer('block_superframe');
+            $this->content->text = $renderer->fetch_block_content($blockid, $students);
         }
 
         return $this->content;
