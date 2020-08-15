@@ -52,6 +52,13 @@ $string['height_details'] = "iframe's height in pixels";
 $string['pagelayout'] = 'Choose page layout';
 $string['pagelayout_details'] = 'Open the iframe in a course or popup window';
 
+$string['poptext'] = 'List Blocks';
+$string['blockid'] = 'Block Id';
+$string['blockname'] = 'Block Name';
+$string['course'] = 'Course';
+$string['catname'] = 'Cat Name';
+$string['tablecaption'] = 'Block instance by course';
+
 // Capability strings.
 $string['superframe:addinstance'] = 'Add a new Super frame block';
 $string['superframe:myaddinstance'] = 'Add a new Super frame block to my moodle';

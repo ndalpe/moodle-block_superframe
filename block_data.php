@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details
+ * block_superframe
  *
  * @package   block_superframe
  * @copyright  Daniel Neis <danielneis@gmail.com>
@@ -28,8 +28,18 @@
  *
  * See: https://www.moodlebites.com/mod/page/view.php?id=24546
  */
-defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2019010510; // Minimal block
-$plugin->requires  = 2017111300; // Minimum Moodle 3.4.
-$plugin->component = 'block_superframe';
+use \block_superframe\local\block_data;
+
+require('../../config.php');
+
+$PAGE->set_url('/blocks/superframe/block_data.php');
+require_login();
+$PAGE->set_course($COURSE);
+$PAGE->set_heading($SITE->fullname);
+$PAGE->set_pagelayout('popup');
+$PAGE->set_title(get_string('pluginname', 'block_superframe'));
+// Let's get some data about blocks.
+$records = block_data::fetch_block_data();
+$renderer = $PAGE->get_renderer('block_superframe');
+$renderer->display_block_table($records);
