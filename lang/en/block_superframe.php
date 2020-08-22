@@ -60,6 +60,11 @@ $string['catname'] = 'Cat Name';
 $string['tablecaption'] = 'Block instance by course';
 $string['tabletext'] = 'Table editing';
 
+$string['size'] = 'Select a size for your iframe';
+$string['custom'] = 'custom';
+$string['small'] = 'small';
+$string['medium'] = 'medium';
+$string['large'] = 'large';
 
 // Capability strings.
 $string['superframe:addinstance'] = 'Add a new Super frame block';

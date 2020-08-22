@@ -26,6 +26,8 @@
 require('../../config.php');
 
 $blockid = required_param('blockid', PARAM_INT);
+$courseid = optional_param('courseid', $COURSE->ID, PARAM_INT);
+$size = optional_param('size','none', PARAM_TEXT);
 
 // Get block's settings.
 $def_config = get_config('block_superframe');
@@ -58,11 +60,17 @@ if ($configdata) {
 	$config->size = 'custom';
 }
 
+// Check the size optional parameter.
+if ($size == 'none') {
+    // First visit to page, use config.
+    $size = $config->size;
+}
+
 // URL - comes either from instance or admin.
 $url = $config->url;
 
 // Let's set up the iframe attributes.
-switch ($config->size) {
+switch ($size) {
     case 'custom':
         $width = $def_config->width;
         $height = $def_config->height;
@@ -120,4 +128,4 @@ echo html_writer::end_tag('div'); // End row.
 // echo $OUTPUT->footer();
 
 $renderer = $PAGE->get_renderer('block_superframe');
-$renderer->display_view_page($url, $width, $height);
+$renderer->display_view_page($url, $width, $height, $courseid, $blockid);
